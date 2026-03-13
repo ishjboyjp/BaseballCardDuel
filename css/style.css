@@ -69,7 +69,7 @@ h1 { text-align: center; color: #ffd700; font-size: 1.8rem; margin-bottom: 10px;
 }
 #base-1 { bottom: 110px; right: 180px; }
 #base-2 { bottom: 210px; left: 50%; transform: translateX(-50%) rotate(45deg); }
-#base-3 { bottom: 110px; left: -20px; }
+#base-3 { bottom: 110px; left: 180px; }
 
 .base.occupied { background: #ffa500; border-color: #ffa500; }
 
