@@ -295,11 +295,6 @@ class BaseballCardGame {
             dot.classList.toggle('filled', i < this.outs);
         });
         
-        // 壘包指示器
-        document.getElementById('base-ind-1').classList.toggle('filled', this.bases[0]);
-        document.getElementById('base-ind-2').classList.toggle('filled', this.bases[1]);
-        document.getElementById('base-ind-3').classList.toggle('filled', this.bases[2]);
-        
         // 壘包
         document.getElementById('base-1').classList.toggle('occupied', this.bases[0]);
         document.getElementById('base-2').classList.toggle('occupied', this.bases[1]);
