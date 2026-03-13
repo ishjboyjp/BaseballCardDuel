@@ -67,7 +67,7 @@ h1 { text-align: center; color: #ffd700; font-size: 1.8rem; margin-bottom: 10px;
     background: #ffd700; border-color: #ffd700;
     width: 32px; height: 32px; font-size: 8px; color: #333;
 }
-#base-1 { bottom: 110px; right: 30px; }
+#base-1 { bottom: 110px; right: -20px; }
 #base-2 { bottom: 210px; left: 50%; transform: translateX(-50%) rotate(45deg); }
 #base-3 { bottom: 110px; left: 30px; }
 
