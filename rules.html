@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚾ 棒球卡牌對戰 - 規則說明</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { padding: 20px; }
+        .rule-section { background: rgba(0,0,0,0.5); padding: 20px; margin: 15px 0; border-radius: 10px; }
+        .rule-section h2 { color: #ffd700; margin-bottom: 15px; }
+        .rule-section h3 { color: #4a90d9; margin: 15px 0 10px; }
+        table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+        th, td { border: 1px solid #444; padding: 8px; text-align: left; }
+        th { background: #333; color: #ffd700; }
+        .card-table td { font-size: 14px; }
+        .back-btn { display: inline-block; background: #ffd700; color: #333; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 20px; }
+        .highlight { color: #ffa500; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>⚾ 棒球卡牌對戰 - 規則說明</h1>
+    
+    <div class="rule-section">
+        <h2>🎮 遊戲目標</h2>
+        <p>3局比賽結束後，得分較高者獲勝。</p>
+    </div>
+    
+    <div class="rule-section">
+        <h2>📋 基礎規則</h2>
+        <table>
+            <tr><th>項目</th><th>說明</th></tr>
+            <tr><td>壞球</td><td>累積 <span class="highlight">4</span> 個 = 打者保送上一壘</td></tr>
+            <tr><td>好球</td><td>累積 <span class="highlight">3</span> 個 = 打者三振出局</td></tr>
+            <tr><td>出局</td><td>累積 <span class="highlight">3</span> 次 = 結束該半局</td></tr>
+            <tr><td>局數</td><td>3局（上半局/下半局）</td></tr>
+        </table>
+    </div>
+    
+    <div class="rule-section">
+        <h2>🃏 卡牌類型</h2>
+        
+        <h3>⚾ 攻擊牌（球數歸零）</h3>
+        <table class="card-table">
+            <tr><th>卡牌</th><th>效果</th><th>可被反制</th></tr>
+            <tr><td>安打</td><td>打者上一壘，壘上跑者推進1壘</td><td>-</td></tr>
+            <tr><td>內野滾地</td><td>打者上一壘</td><td>內野封殺、界外球</td></tr>
+            <tr><td>外野高飛</td><td>打者上二壘</td><td>外野接殺、界外球</td></tr>
+            <tr><td>觸擊短打</td><td>打者出局，跑者推進1壘（需壘上有人）</td><td>界外球</td></tr>
+            <tr><td>全壘打</td><td>打者+所有跑者回本壘得分（需滿球數 3-3）</td><td>界外球</td></tr>
+        </table>
+        
+        <h3>🛡️ 防守牌（需特定條件）</h3>
+        <table class="card-table">
+            <tr><th>卡牌</th><th>使用條件</th><th>效果</th><th>可被反制</th></tr>
+            <tr><td>內野封殺</td><td>對手打出內野滾地</td><td>打者出局</td><td>失誤</td></tr>
+            <tr><td>外野接殺</td><td>對手打出外野高飛</td><td>打者出局</td><td>失誤</td></tr>
+            <tr><td>補手防盜</td><td>對手盜壘或不死三振</td><td>跑者出局</td><td>失誤</td></tr>
+            <tr><td>投手牽制</td><td>壘上有人</td><td>跑者出局</td><td>失誤</td></tr>
+        </table>
+        
+        <h3>⭐ 特殊牌</h3>
+        <table class="card-table">
+            <tr><th>卡牌</th><th>效果</th></tr>
+            <tr><td>不死三振</td><td>2出局+一壘無跑者+被三振時，打者上一壘</td></tr>
+            <tr><td>盜壘</td><td>一或二壘有人時，跑者推進1壘</td></tr>
+            <tr><td>暴投</td><td>壘上有人時，跑者推進1壘，壞球+1</td></tr>
+            <tr><td>界外球</td><td>使攻擊牌無效，好球+1（需對手打出攻擊牌）</td></tr>
+            <tr><td>失誤</td><td>使防守牌無效（需對手打出防守牌）</td></tr>
+            <tr><td>美技</td><td>使失誤無效（需對手打出失誤）</td></tr>
+        </table>
+        
+        <h3>🎯 基礎牌（持續累積）</h3>
+        <table class="card-table">
+            <tr><th>卡牌</th><th>效果</th></tr>
+            <tr><td>壞球</td><td>壞球+1，滿4保送</td></tr>
+            <tr><td>好球</td><td>好球+1，滿3三振</td></tr>
+        </table>
+    </div>
+    
+    <div class="rule-section">
+        <h2>🔗 反應鏈範例</h2>
+        <pre style="background: #222; padding: 15px; border-radius: 8px; overflow-x: auto;">
+攻方: 外野高飛
+  └→ 守方: 外野接殺 (打者出局)
+    └→ 攻方: 失誤 (使接殺無效)
+      └→ 守方: 美技 (使失誤無效)
+→ 最終: 外野接殺生效，打者出局
+        </pre>
+    </div>
+    
+    <div class="rule-section">
+        <h2>👆 操作說明</h2>
+        <ol>
+            <li>點擊「抽牌」抽新牌</li>
+            <li>點擊手中卡牌出牌</li>
+            <li>AI 會自動回應</li>
+            <li>累積3出局換局</li>
+            <li>3局結束比分高者獲勝</li>
+        </ol>
+    </div>
+    
+    <a href="index.html" class="back-btn">← 回到遊戲</a>
+</body>
+</html>
