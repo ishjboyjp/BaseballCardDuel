@@ -12,18 +12,12 @@ body {
 }
 
 #game-container {
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 10px;
 }
 
-h1 {
-    text-align: center;
-    color: #ffd700;
-    font-size: 2rem;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-}
+h1 { text-align: center; color: #ffd700; font-size: 1.8rem; margin-bottom: 10px; }
 
 /* 計分板 */
 #scoreboard {
@@ -38,243 +32,147 @@ h1 {
 }
 
 .team { text-align: center; }
-.team .score { font-size: 2rem; font-weight: bold; color: #fff; }
-.inning-info { text-align: center; font-size: 1.2rem; }
+.team .score { font-size: 1.8rem; font-weight: bold; color: #fff; }
 
-/* 棒球場 */
+/* 球場 */
 #field {
     position: relative;
-    width: 400px;
-    height: 350px;
-    margin: 20px auto;
+    width: 100%;
+    max-width: 600px;
+    height: 280px;
+    margin: 15px auto;
     background: #2d5a27;
-    border-radius: 200px 200px 50px 50px;
-    border: 4px solid #8b4513;
+    border-radius: 150px 150px 30px 30px;
+    border: 3px solid #8b4513;
 }
 
-#field::before {
-    content: '';
-    position: absolute;
-    top: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 200px;
-    height: 200px;
-    background: #8b4513;
-    border-radius: 50%;
-    opacity: 0.2;
-}
-
-/* 壘包 - 菱形 */
+/* 壘包 */
 .base {
     position: absolute;
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     background: transparent;
     border: 3px solid #87ceeb;
     transform: rotate(45deg);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 10px;
+    font-size: 9px;
     color: transparent;
-    transition: all 0.3s;
 }
 
-/* 壘包位置 */
 #base-home {
-    bottom: 25px;
-    left: 50%;
-    transform: translateX(-50%) rotate(0deg);
-    background: #ffd700;
-    border-color: #ffd700;
-    width: 35px;
-    height: 35px;
-    font-size: 10px;
-    color: #333;
+    bottom: 20px; left: 50%;
+    transform: translateX(-50%);
+    background: #ffd700; border-color: #ffd700;
+    width: 32px; height: 32px; font-size: 8px; color: #333;
 }
+#base-1 { bottom: 60px; right: 80px; }
+#base-2 { bottom: 110px; left: 50%; transform: translateX(-50%) rotate(45deg); }
+#base-3 { bottom: 60px; left: 80px; }
 
-#base-1 { bottom: 75px; right: 80px; }
-#base-2 { bottom: 140px; left: 50%; transform: translateX(-50%) rotate(45deg); }
-#base-3 { bottom: 75px; left: 80px; }
+.base.occupied { background: #ffa500; border-color: #ffa500; }
 
-/* 壘包有跑者 - 橙黃色填滿 */
-.base.occupied {
-    background: #ffa500;
-    border-color: #ffa500;
-    box-shadow: 0 0 12px #ffa500;
-}
-
-/* BSO 計數區 - 右側 */
-#bso-display {
-    position: absolute;
-    top: 40px;
-    right: 30px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    background: rgba(0,0,0,0.7);
-    padding: 15px;
-    border-radius: 10px;
-    border: 2px solid #4a90d9;
-}
-
-.bso-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.bso-label {
-    width: 20px;
-    font-weight: bold;
-    font-size: 18px;
-}
-
-.bso-label.balls { color: #4caf50; }
-.bso-label.strikes { color: #f44336; }
-.bso-label.outs { color: #ff0000; }
-
-.bso-dots {
-    display: flex;
-    gap: 5px;
-}
-
-.bso-dot {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: #333;
-    border: 2px solid #555;
-    transition: all 0.3s;
-}
-
-/* B 壞球 - 3格 */
-.balls .bso-dot.filled { background: #4caf50; border-color: #4caf50; box-shadow: 0 0 8px #4caf50; }
-
-/* S 好球 - 2格 */
-.strikes .bso-dot.filled { background: #f44336; border-color: #f44336; box-shadow: 0 0 8px #f44336; }
-
-/* O 出局 - 2格 */
-.outs .bso-dot.filled { background: #ff0000; border-color: #ff0000; box-shadow: 0 0 8px #ff0000; }
-
-/* 壘包指示器 - 左上角 */
+/* 壘包指示器 */
 #bases-display {
     position: absolute;
-    top: 30px;
-    left: 30px;
-    display: flex;
-    gap: 8px;
+    top: 20px; left: 20px;
+    display: flex; gap: 6px;
     background: rgba(0,0,0,0.7);
-    padding: 10px;
-    border-radius: 8px;
-    border: 2px solid #4a90d9;
+    padding: 8px; border-radius: 6px;
+}
+.base-indicator { width: 16px; height: 16px; border: 2px solid #87ceeb; transform: rotate(45deg); background: transparent; }
+.base-indicator.filled { background: #ffa500; border-color: #ffa500; }
+
+/* BSO */
+#bso-display {
+    position: absolute;
+    top: 20px; right: 20px;
+    display: flex; flex-direction: column; gap: 10px;
+    background: rgba(0,0,0,0.7);
+    padding: 12px; border-radius: 8px;
+}
+.bso-row { display: flex; align-items: center; gap: 6px; }
+.bso-label { font-weight: bold; font-size: 16px; width: 18px; }
+.balls .bso-label { color: #4caf50; }
+.strikes .bso-label { color: #f44336; }
+.outs .bso-label { color: #ff0000; }
+.bso-dot { width: 14px; height: 14px; border-radius: 50%; background: #333; border: 2px solid #555; }
+.balls .bso-dot.filled { background: #4caf50; }
+.strikes .bso-dot.filled { background: #f44336; }
+.outs .bso-dot.filled { background: #ff0000; }
+
+/* 對戰區 */
+#battle-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
+    min-height: 120px;
 }
 
-.base-indicator {
-    width: 20px;
-    height: 20px;
-    border: 2px solid #87ceeb;
-    transform: rotate(45deg);
-    background: transparent;
-}
+/* 玩家區 */
+.player-zone { text-align: center; width: 30%; }
+.player-zone h3 { color: #4a90d9; font-size: 14px; margin-bottom: 8px; }
+.player-cards { display: flex; flex-direction: column; gap: 4px; align-items: center; }
 
-.base-indicator.filled {
-    background: #ffa500;
-    border-color: #ffa500;
-    box-shadow: 0 0 8px #ffa500;
+/* 中央結果 */
+#result-area {
+    width: 35%;
+    text-align: center;
 }
-
-/* 手牌區 */
-#player-hand {
-    background: rgba(0,0,0,0.6);
+#result-display {
+    background: rgba(0,0,0,0.8);
     padding: 15px;
     border-radius: 10px;
-    margin-top: 15px;
-}
-
-.hand-label {
-    text-align: center;
-    margin-bottom: 10px;
-    color: #aaa;
-    font-size: 14px;
-}
-
-#hand-cards {
+    border: 2px solid #ffd700;
+    min-height: 80px;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     justify-content: center;
-    gap: 10px;
 }
+#last-play { font-size: 13px; color: #aaa; margin-bottom: 8px; }
+#result-text { font-size: 18px; font-weight: bold; color: #ffd700; }
 
 /* 卡牌 */
 .card {
-    width: 70px;
-    height: 95px;
+    width: 55px; height: 75px;
     background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%);
-    border: 2px solid #333;
-    border-radius: 6px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    color: #333;
-}
-
-.card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 20px rgba(255,215,0,0.5);
-}
-
-.card-name { font-size: 12px; font-weight: bold; text-align: center; }
-.card-type { font-size: 10px; color: #666; }
-
-.card.effect-ball { border-left: 4px solid #4caf50; }
-.card.effect-strike { border-left: 4px solid #f44336; }
-.card.effect-hit { border-left: 4px solid #2196f3; }
-.card.effect-defense { border-left: 4px solid #ff9800; }
-.card.effect-special { border-left: 4px solid #9c27b0; }
-.card.effect-homerun { border-left: 4px solid #ffd700; background: linear-gradient(135deg, #fff9c4 0%, #ffeb3b 100%); }
-
-/* 訊息 */
-#message-area {
-    text-align: center;
-    min-height: 40px;
-    margin: 10px 0;
-}
-
-.message {
-    background: rgba(255,215,0,0.2);
-    border: 1px solid #ffd700;
-    padding: 12px;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    animation: fadeIn 0.3s;
-}
-
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-/* 按鈕 */
-#controls {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 15px;
-}
-
-button {
-    background: linear-gradient(180deg, #ffd700 0%, #ff8c00 100%);
-    border: none;
-    padding: 12px 30px;
-    font-size: 1rem;
-    font-weight: bold;
-    color: #333;
-    border-radius: 8px;
+    border: 2px solid #333; border-radius: 4px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
     cursor: pointer;
     transition: transform 0.2s;
 }
+.card:hover { transform: scale(1.1); }
+.card-name { font-size: 10px; font-weight: bold; color: #333; text-align: center; }
+.card-type { font-size: 8px; color: #666; }
+.card.effect-ball { border-left: 3px solid #4caf50; }
+.card.effect-strike { border-left: 3px solid #f44336; }
+.card.effect-hit { border-left: 3px solid #2196f3; }
+.card.effect-defense { border-left: 3px solid #ff9800; }
+.card.effect-special { border-left: 3px solid #9c27b0; }
+.card.effect-homerun { border-left: 3px solid #ffd700; background: #fff9c4; }
 
-button:hover { transform: translateY(-2px); }
-button:disabled { background: #666; cursor: not-allowed; }
+/* 手牌區 */
+#player-hand {
+    background: rgba(0,0,0,0.5);
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+.hand-label { text-align: center; color: #aaa; font-size: 13px; margin-bottom: 8px; }
+#hand-cards { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+
+/* 訊息 */
+#message-area { text-align: center; min-height: 30px; margin: 8px 0; }
+.message { background: rgba(255,215,0,0.2); border: 1px solid #ffd700; padding: 8px; border-radius: 6px; font-size: 14px; }
+
+/* 按鈕 */
+#controls { display: flex; justify-content: center; gap: 15px; margin-top: 12px; }
+button, .btn {
+    background: linear-gradient(180deg, #ffd700 0%, #ff8c00 100%);
+    border: none; padding: 10px 20px; font-size: 14px; font-weight: bold; color: #333; border-radius: 6px; cursor: pointer;
+}
+button:hover, .btn:hover { transform: translateY(-2px); }
+button:disabled { background: #666; }
+a.btn { text-decoration: none; }

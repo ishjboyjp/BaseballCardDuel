@@ -25,61 +25,74 @@
             </div>
         </div>
         
-        <!-- 棒球場 -->
+        <!-- 球場 -->
         <div id="field">
-            <!-- 壘包指示器 - 左上角 -->
             <div id="bases-display">
                 <div class="base-indicator" id="base-ind-1"></div>
                 <div class="base-indicator" id="base-ind-2"></div>
                 <div class="base-indicator" id="base-ind-3"></div>
             </div>
             
-            <!-- BSO 計數 - 右側 -->
             <div id="bso-display">
-                <!-- B 壞球 -->
                 <div class="bso-row balls">
                     <span class="bso-label balls">B</span>
-                    <div class="bso-dots">
-                        <div class="bso-dot"></div>
-                        <div class="bso-dot"></div>
-                        <div class="bso-dot"></div>
-                    </div>
+                    <div class="bso-dot"></div>
+                    <div class="bso-dot"></div>
+                    <div class="bso-dot"></div>
                 </div>
-                <!-- S 好球 -->
                 <div class="bso-row strikes">
                     <span class="bso-label strikes">S</span>
-                    <div class="bso-dots">
-                        <div class="bso-dot"></div>
-                        <div class="bso-dot"></div>
-                    </div>
+                    <div class="bso-dot"></div>
+                    <div class="bso-dot"></div>
                 </div>
-                <!-- O 出局 -->
                 <div class="bso-row outs">
                     <span class="bso-label outs">O</span>
-                    <div class="bso-dots">
-                        <div class="bso-dot"></div>
-                        <div class="bso-dot"></div>
-                    </div>
+                    <div class="bso-dot"></div>
+                    <div class="bso-dot"></div>
                 </div>
             </div>
             
-            <!-- 壘包 -->
             <div class="base" id="base-3">三</div>
             <div class="base" id="base-2">二</div>
             <div class="base" id="base-1">一</div>
             <div class="base" id="base-home">本</div>
         </div>
         
-        <div id="message-area"></div>
+        <!-- 對戰區 -->
+        <div id="battle-area">
+            <!-- 玩家出牌 -->
+            <div class="player-zone">
+                <h3>👤 你</h3>
+                <div class="player-cards" id="player-play"></div>
+            </div>
+            
+            <!-- 結果 -->
+            <div id="result-area">
+                <div id="result-display">
+                    <div id="last-play">等待出牌...</div>
+                    <div id="result-text"></div>
+                </div>
+            </div>
+            
+            <!-- AI 出牌 -->
+            <div class="player-zone">
+                <h3>🤖 AI</h3>
+                <div class="player-cards" id="ai-play"></div>
+            </div>
+        </div>
+        
+        <div id="message-area">
+            <div class="message">👆 點擊卡牌出牌</div>
+        </div>
         
         <div id="player-hand">
-            <div class="hand-label">👆 點擊卡牌出牌</div>
+            <div class="hand-label">你的手牌</div>
             <div id="hand-cards"></div>
         </div>
         
         <div id="controls">
             <button id="draw-btn">🎯 抽牌</button>
-            <a href="rules.html" style="background: #4a90d9; color: #fff; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: bold;">📖 規則</a>
+            <a href="rules.html" class="btn">📖 規則</a>
         </div>
     </div>
     

@@ -68,6 +68,7 @@ class BaseballCardGame {
         this.renderHand();
         
         this.message(`你: ${card.name}`);
+        this.showPlay(card, null, '');
         
         // 執行效果
         if (card.resetCount) {
@@ -75,6 +76,8 @@ class BaseballCardGame {
             this.strikes = 0;
         }
         
+        let result = '';
+        // 執行並取得結果訊息
         card.effect(this);
         
         if (this.gameOver) return;
@@ -105,6 +108,7 @@ class BaseballCardGame {
                 const idx = this.aiHand.findIndex(c => c.id === defenseCards[0].id);
                 const card = this.aiHand.splice(idx, 1)[0];
                 this.message(`🤖 AI: ${card.name}`);
+                this.showPlay(null, card, "");
                 
                 if (card.resetCount) {
                     this.balls = 0;
@@ -123,6 +127,7 @@ class BaseballCardGame {
             const card = this.aiHand.splice(idx, 1)[0];
             
             this.message(`🤖 AI: ${card.name}`);
+            this.showPlay(null, card, "");
             
             if (card.resetCount) {
                 this.balls = 0;
@@ -232,9 +237,38 @@ class BaseballCardGame {
         document.getElementById('draw-btn').disabled = true;
     }
     
-    message(text) {
+    message(text, isResult = false) {
         document.getElementById('message-area').innerHTML = 
             `<div class="message">${text}</div>`;
+        if (isResult) {
+            document.getElementById('result-text').textContent = text;
+        }
+    }
+    
+    // 顯示雙方出牌
+    showPlay(playerCard, aiCard, resultText) {
+        // 玩家出牌
+        const playerZone = document.getElementById('player-play');
+        playerZone.innerHTML = '';
+        if (playerCard) {
+            const cardEl = document.createElement('div');
+            cardEl.className = `card ${playerCard.type || ''}`;
+            cardEl.innerHTML = `<div class="card-name">${playerCard.name}</div>`;
+            playerZone.appendChild(cardEl);
+        }
+        
+        // AI 出牌
+        const aiZone = document.getElementById('ai-play');
+        aiZone.innerHTML = '';
+        if (aiCard) {
+            const cardEl = document.createElement('div');
+            cardEl.className = `card ${aiCard.type || ''}`;
+            cardEl.innerHTML = `<div class="card-name">${aiCard.name}</div>`;
+            aiZone.appendChild(cardEl);
+        }
+        
+        // 結果
+        document.getElementById('last-play').textContent = resultText || '';
     }
     
     updateDisplay() {
