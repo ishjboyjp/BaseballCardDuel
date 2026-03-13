@@ -8,8 +8,8 @@ class BaseballCardGame {
         this.playerHand = [];
         this.aiHand = [];
         
-        this.homeScore = 0;
-        this.awayScore = 0;
+        this.homeScore = 0;  // 玩家
+        this.awayScore = 0;  // AI
         this.inning = 1;
         this.isTop = true;
         this.outs = 0;
