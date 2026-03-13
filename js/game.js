@@ -285,10 +285,23 @@ class BaseballCardGame {
         document.getElementById('inning').textContent = `第${this.inning}局`;
         document.getElementById('inning-half').textContent = this.isTop ? '上' : '下';
         
-        // 球數
-        document.getElementById('balls').textContent = this.balls;
-        document.getElementById('strikes').textContent = this.strikes;
-        document.getElementById('outs').textContent = this.outs;
+        // 壞球點
+        const ballsDots = document.querySelectorAll('#balls-dots .dot');
+        ballsDots.forEach((dot, i) => {
+            dot.classList.toggle('filled', i < this.balls);
+        });
+        
+        // 好球點
+        const strikesDots = document.querySelectorAll('#strikes-dots .dot');
+        strikesDots.forEach((dot, i) => {
+            dot.classList.toggle('filled', i < this.strikes);
+        });
+        
+        // 出局點
+        const outsDots = document.querySelectorAll('#outs-dots .dot');
+        outsDots.forEach((dot, i) => {
+            dot.classList.toggle('filled', i < this.outs);
+        });
         
         // 壘包
         document.getElementById('base-1').classList.toggle('occupied', this.bases[0]);

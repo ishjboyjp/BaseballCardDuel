@@ -81,34 +81,98 @@ h1 {
     margin: 0 auto;
 }
 
-/* 壘包 */
+/* 壘包與球數區域 */
+#field-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+    padding: 15px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 10px;
+}
+
+/* 壘包區 */
 #field {
     display: flex;
     justify-content: center;
-    gap: 80px;
-    margin: 10px 0;
+    gap: 60px;
     position: relative;
 }
 
+#field::before {
+    content: '⚾';
+    position: absolute;
+    font-size: 30px;
+    top: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 .base {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     background: #fff;
-    border: 2px solid #000;
+    border: 3px solid #000;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
+    font-size: 14px;
     color: #333;
+    transform: rotate(45deg);
 }
 
 .base.home {
     background: #ffd700;
+    transform: rotate(0deg);
+    border-radius: 50%;
+    font-size: 12px;
 }
 
 .base.occupied {
-    background: #ff6b35;
+    background: #ff6b35 !important;
+    box-shadow: 0 0 10px #ff6b35;
 }
+
+/* 球數區 */
+#count-area {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.count-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.count-label {
+    width: 60px;
+    font-size: 14px;
+}
+
+.count-balls { color: #4caf50; }
+.count-strikes { color: #f44336; }
+.count-outs { color: #ff9800; }
+
+.count-dots {
+    display: flex;
+    gap: 5px;
+}
+
+.dot {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #444;
+    border: 1px solid #666;
+}
+
+.dot.filled.balls { background: #4caf50; }
+.dot.filled.strikes { background: #f44336; }
+.dot.filled.outs { background: #ff9800; }
 
 /* 手牌區 */
 #player-hand {
