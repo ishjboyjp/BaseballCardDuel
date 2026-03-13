@@ -285,23 +285,28 @@ class BaseballCardGame {
         document.getElementById('inning').textContent = `第${this.inning}局`;
         document.getElementById('inning-half').textContent = this.isTop ? '上' : '下';
         
-        // 壞球點
-        const ballsDots = document.querySelectorAll('#balls-dots .dot');
+        // 壞球 B
+        const ballsDots = document.querySelectorAll('#bso-display .balls .bso-dot');
         ballsDots.forEach((dot, i) => {
             dot.classList.toggle('filled', i < this.balls);
         });
         
-        // 好球點
-        const strikesDots = document.querySelectorAll('#strikes-dots .dot');
+        // 好球 S
+        const strikesDots = document.querySelectorAll('#bso-display .strikes .bso-dot');
         strikesDots.forEach((dot, i) => {
             dot.classList.toggle('filled', i < this.strikes);
         });
         
-        // 出局點
-        const outsDots = document.querySelectorAll('#outs-dots .dot');
+        // 出局 O
+        const outsDots = document.querySelectorAll('#bso-display .outs .bso-dot');
         outsDots.forEach((dot, i) => {
             dot.classList.toggle('filled', i < this.outs);
         });
+        
+        // 壘包指示器
+        document.getElementById('base-ind-1').classList.toggle('filled', this.bases[0]);
+        document.getElementById('base-ind-2').classList.toggle('filled', this.bases[1]);
+        document.getElementById('base-ind-3').classList.toggle('filled', this.bases[2]);
         
         // 壘包
         document.getElementById('base-1').classList.toggle('occupied', this.bases[0]);

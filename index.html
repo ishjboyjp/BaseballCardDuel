@@ -11,7 +11,7 @@
         <h1>⚾ 棒球卡牌對戰</h1>
         
         <div id="scoreboard">
-            <div class="team" id="team-away">
+            <div class="team">
                 <span>客隊</span>
                 <span class="score" id="away-score">0</span>
             </div>
@@ -19,7 +19,7 @@
                 <span id="inning">第1局</span>
                 <span id="inning-half">上</span>
             </div>
-            <div class="team" id="team-home">
+            <div class="team">
                 <span>主隊</span>
                 <span class="score" id="home-score">0</span>
             </div>
@@ -27,39 +27,47 @@
         
         <!-- 棒球場 -->
         <div id="field">
+            <!-- 壘包指示器 - 左上角 -->
+            <div id="bases-display">
+                <div class="base-indicator" id="base-ind-1"></div>
+                <div class="base-indicator" id="base-ind-2"></div>
+                <div class="base-indicator" id="base-ind-3"></div>
+            </div>
+            
+            <!-- BSO 計數 - 右側 -->
+            <div id="bso-display">
+                <!-- B 壞球 -->
+                <div class="bso-row balls">
+                    <span class="bso-label balls">B</span>
+                    <div class="bso-dots">
+                        <div class="bso-dot"></div>
+                        <div class="bso-dot"></div>
+                        <div class="bso-dot"></div>
+                    </div>
+                </div>
+                <!-- S 好球 -->
+                <div class="bso-row strikes">
+                    <span class="bso-label strikes">S</span>
+                    <div class="bso-dots">
+                        <div class="bso-dot"></div>
+                        <div class="bso-dot"></div>
+                    </div>
+                </div>
+                <!-- O 出局 -->
+                <div class="bso-row outs">
+                    <span class="bso-label outs">O</span>
+                    <div class="bso-dots">
+                        <div class="bso-dot"></div>
+                        <div class="bso-dot"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 壘包 -->
             <div class="base" id="base-3">三</div>
             <div class="base" id="base-2">二</div>
             <div class="base" id="base-1">一</div>
             <div class="base" id="base-home">本</div>
-            
-            <!-- 球數顯示在中央 -->
-            <div id="count-display">
-                <div class="count-section count-balls">
-                    <span class="count-label">壞球</span>
-                    <div class="count-dots" id="balls-dots">
-                        <div class="dot balls"></div>
-                        <div class="dot balls"></div>
-                        <div class="dot balls"></div>
-                        <div class="dot balls"></div>
-                    </div>
-                </div>
-                <div class="count-section count-strikes">
-                    <span class="count-label">好球</span>
-                    <div class="count-dots" id="strikes-dots">
-                        <div class="dot strikes"></div>
-                        <div class="dot strikes"></div>
-                        <div class="dot strikes"></div>
-                    </div>
-                </div>
-                <div class="count-section count-outs">
-                    <span class="count-label">出局</span>
-                    <div class="count-dots" id="outs-dots">
-                        <div class="dot outs"></div>
-                        <div class="dot outs"></div>
-                        <div class="dot outs"></div>
-                    </div>
-                </div>
-            </div>
         </div>
         
         <div id="message-area"></div>

@@ -30,17 +30,18 @@ h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #2d2d2d;
+    background: #1a3a5a;
     padding: 10px 20px;
     border-radius: 8px;
     margin-bottom: 10px;
+    border: 2px solid #4a90d9;
 }
 
 .team { text-align: center; }
-.team .score { font-size: 2rem; font-weight: bold; color: #ffd700; }
+.team .score { font-size: 2rem; font-weight: bold; color: #fff; }
 .inning-info { text-align: center; font-size: 1.2rem; }
 
-/* 球場 */
+/* 棒球場 */
 #field {
     position: relative;
     width: 400px;
@@ -61,116 +62,128 @@ h1 {
     height: 200px;
     background: #8b4513;
     border-radius: 50%;
-    opacity: 0.3;
+    opacity: 0.2;
 }
 
-/* 壘包 - 菱形排列 */
+/* 壘包 - 菱形 */
 .base {
     position: absolute;
-    width: 40px;
-    height: 40px;
-    background: #fff;
-    border: 3px solid #000;
+    width: 30px;
+    height: 30px;
+    background: transparent;
+    border: 3px solid #87ceeb;
+    transform: rotate(45deg);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
-    font-size: 12px;
-    color: #333;
-    transform: rotate(45deg);
-    z-index: 10;
+    font-size: 10px;
+    color: transparent;
     transition: all 0.3s;
 }
 
-/* 壘包位置 - 標準菱形 */
+/* 壘包位置 */
 #base-home {
-    bottom: 30px;
+    bottom: 25px;
     left: 50%;
     transform: translateX(-50%) rotate(0deg);
     background: #ffd700;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    font-size: 11px;
+    border-color: #ffd700;
+    width: 35px;
+    height: 35px;
+    font-size: 10px;
+    color: #333;
 }
 
-#base-1 {
-    bottom: 80px;
-    right: 60px;
-}
+#base-1 { bottom: 75px; right: 80px; }
+#base-2 { bottom: 140px; left: 50%; transform: translateX(-50%) rotate(45deg); }
+#base-3 { bottom: 75px; left: 80px; }
 
-#base-2 {
-    bottom: 150px;
-    left: 50%;
-    transform: translateX(-50%) rotate(45deg);
-}
-
-#base-3 {
-    bottom: 80px;
-    left: 60px;
-}
-
-/* 壘包有跑者時 */
+/* 壘包有跑者 - 橙黃色填滿 */
 .base.occupied {
-    background: #ff6b35 !important;
-    box-shadow: 0 0 15px #ff6b35;
-    animation: pulse 1s infinite;
+    background: #ffa500;
+    border-color: #ffa500;
+    box-shadow: 0 0 12px #ffa500;
 }
 
-@keyframes pulse {
-    0%, 100% { transform: rotate(45deg) scale(1); }
-    50% { transform: rotate(45deg) scale(1.1); }
-}
-
-/* 球數顯示 - 在內野區 */
-#count-display {
+/* BSO 計數區 - 右側 */
+#bso-display {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 40px;
+    right: 30px;
     display: flex;
     flex-direction: column;
     gap: 15px;
-    background: rgba(0,0,0,0.8);
-    padding: 20px;
-    border-radius: 15px;
-    border: 2px solid #ffd700;
-    z-index: 20;
+    background: rgba(0,0,0,0.7);
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid #4a90d9;
 }
 
-.count-section {
-    text-align: center;
-}
-
-.count-label {
-    display: block;
-    font-size: 14px;
-    margin-bottom: 8px;
-    font-weight: bold;
-}
-
-.count-balls .count-label { color: #4caf50; }
-.count-strikes .count-label { color: #f44336; }
-.count-outs .count-label { color: #ff9800; }
-
-.count-dots {
+.bso-row {
     display: flex;
-    justify-content: center;
+    align-items: center;
     gap: 8px;
 }
 
-.dot {
+.bso-label {
     width: 20px;
-    height: 20px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.bso-label.balls { color: #4caf50; }
+.bso-label.strikes { color: #f44336; }
+.bso-label.outs { color: #ff0000; }
+
+.bso-dots {
+    display: flex;
+    gap: 5px;
+}
+
+.bso-dot {
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
-    background: #444;
-    border: 2px solid #666;
+    background: #333;
+    border: 2px solid #555;
     transition: all 0.3s;
 }
 
-.dot.filled.balls { background: #4caf50; box-shadow: 0 0 8px #4caf50; }
-.dot.filled.strikes { background: #f44336; box-shadow: 0 0 8px #f44336; }
-.dot.filled.outs { background: #ff9800; box-shadow: 0 0 8px #ff9800; }
+/* B 壞球 - 3格 */
+.balls .bso-dot.filled { background: #4caf50; border-color: #4caf50; box-shadow: 0 0 8px #4caf50; }
+
+/* S 好球 - 2格 */
+.strikes .bso-dot.filled { background: #f44336; border-color: #f44336; box-shadow: 0 0 8px #f44336; }
+
+/* O 出局 - 2格 */
+.outs .bso-dot.filled { background: #ff0000; border-color: #ff0000; box-shadow: 0 0 8px #ff0000; }
+
+/* 壘包指示器 - 左上角 */
+#bases-display {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    display: flex;
+    gap: 8px;
+    background: rgba(0,0,0,0.7);
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid #4a90d9;
+}
+
+.base-indicator {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #87ceeb;
+    transform: rotate(45deg);
+    background: transparent;
+}
+
+.base-indicator.filled {
+    background: #ffa500;
+    border-color: #ffa500;
+    box-shadow: 0 0 8px #ffa500;
+}
 
 /* 手牌區 */
 #player-hand {
@@ -196,11 +209,11 @@ h1 {
 
 /* 卡牌 */
 .card {
-    width: 75px;
-    height: 100px;
+    width: 70px;
+    height: 95px;
     background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%);
     border: 2px solid #333;
-    border-radius: 8px;
+    border-radius: 6px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -215,18 +228,15 @@ h1 {
     box-shadow: 0 8px 20px rgba(255,215,0,0.5);
 }
 
-.card-name { font-size: 14px; font-weight: bold; text-align: center; }
-.card-type { font-size: 11px; color: #666; }
+.card-name { font-size: 12px; font-weight: bold; text-align: center; }
+.card-type { font-size: 10px; color: #666; }
 
-.card.effect-ball { border-left: 5px solid #4caf50; }
-.card.effect-strike { border-left: 5px solid #f44336; }
-.card.effect-hit { border-left: 5px solid #2196f3; }
-.card.effect-defense { border-left: 5px solid #ff9800; }
-.card.effect-special { border-left: 5px solid #9c27b0; }
-.card.effect-homerun { 
-    border-left: 5px solid #ffd700; 
-    background: linear-gradient(135deg, #fff9c4 0%, #ffeb3b 100%);
-}
+.card.effect-ball { border-left: 4px solid #4caf50; }
+.card.effect-strike { border-left: 4px solid #f44336; }
+.card.effect-hit { border-left: 4px solid #2196f3; }
+.card.effect-defense { border-left: 4px solid #ff9800; }
+.card.effect-special { border-left: 4px solid #9c27b0; }
+.card.effect-homerun { border-left: 4px solid #ffd700; background: linear-gradient(135deg, #fff9c4 0%, #ffeb3b 100%); }
 
 /* 訊息 */
 #message-area {
