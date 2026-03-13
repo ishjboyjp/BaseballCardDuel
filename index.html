@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚾ 棒球卡牌對戰</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="game-container">
+        <h1>⚾ 棒球卡牌對戰</h1>
+        <div id="scoreboard">
+            <div class="team" id="team-away">
+                <span class="name">客隊</span>
+                <span class="score" id="away-score">0</span>
+            </div>
+            <div class="inning-info">
+                <span id="inning">第1局</span>
+                <span id=" inning-half">上</span>
+            </div>
+            <div class="team" id="team-home">
+                <span class="name">主隊</span>
+                <span class="score" id="home-score">0</span>
+            </div>
+        </div>
+        
+        <div id="count-display">
+            <div class="count balls">壞球: <span id="balls">0</span>/4</div>
+            <div class="count strikes">好球: <span id="strikes">0</span>/3</div>
+            <div class="count outs">出局: <span id="outs">0</span>/3</div>
+        </div>
+        
+        <canvas id="gameCanvas" width="800" height="500"></canvas>
+        
+        <div id="field">
+            <div class="base" id="base-3">三壘</div>
+            <div class="base" id="base-2">二壘</div>
+            <div class="base" id="base-1">一壘</div>
+            <div class="base home">本壘</div>
+        </div>
+        
+        <div id="player-hand">
+            <div class="hand-label">你的手牌 (點擊出牌)</div>
+            <div id="hand-cards"></div>
+        </div>
+        
+        <div id="message-area"></div>
+        
+        <div id="controls">
+            <button id="draw-btn">抽牌</button>
+            <button id="end-turn-btn">結束回合</button>
+        </div>
+    </div>
+    
+    <script src="js/cards.js"></script>
+    <script src="js/game.js"></script>
+</body>
+</html>

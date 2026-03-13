@@ -1,0 +1,221 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #1a3a1a 0%, #0d1f0d 100%);
+    min-height: 100vh;
+    font-family: 'Noto Sans TC', sans-serif;
+    color: #fff;
+}
+
+#game-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+h1 {
+    text-align: center;
+    color: #ffd700;
+    font-size: 2rem;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+/* 計分板 */
+#scoreboard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #2d2d2d;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.team {
+    text-align: center;
+}
+
+.team .score {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ffd700;
+}
+
+.inning-info {
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+/* 球數顯示 */
+#count-display {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 10px;
+}
+
+.count {
+    background: #333;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+}
+
+.count.balls { border-left: 4px solid #4caf50; }
+.count.strikes { border-left: 4px solid #f44336; }
+.count.outs { border-left: 4px solid #ff9800; }
+
+/* 遊戲畫布 */
+#gameCanvas {
+    background: #1a472a;
+    border: 3px solid #8b4513;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 800px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* 壘包 */
+#field {
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+    margin: 10px 0;
+    position: relative;
+}
+
+.base {
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    border: 2px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #333;
+}
+
+.base.home {
+    background: #ffd700;
+}
+
+.base.occupied {
+    background: #ff6b35;
+}
+
+/* 手牌區 */
+#player-hand {
+    background: rgba(0,0,0,0.5);
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.hand-label {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #aaa;
+}
+
+#hand-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* 卡牌 */
+.card {
+    width: 80px;
+    height: 110px;
+    background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%);
+    border: 2px solid #333;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    color: #333;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(255,215,0,0.5);
+}
+
+.card-name {
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.card-type {
+    font-size: 0.7rem;
+    color: #666;
+}
+
+.card.effect-ball { border-left: 4px solid #4caf50; }
+.card.effect-strike { border-left: 4px solid #f44336; }
+.card.effect-hit { border-left: 4px solid #2196f3; }
+.card.effect-defense { border-left: 4px solid #ff9800; }
+.card.effect-special { border-left: 4px solid #9c27b0; }
+.card.effect-homerun { border-left: 4px solid #ffd700; background: linear-gradient(135deg, #fff9c4 0%, #ffeb3b 100%); }
+
+/* 訊息 */
+#message-area {
+    text-align: center;
+    min-height: 40px;
+    margin: 10px 0;
+}
+
+.message {
+    background: rgba(255,215,0,0.2);
+    border: 1px solid #ffd700;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* 按鈕 */
+#controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+button {
+    background: linear-gradient(180deg, #ffd700 0%, #ff8c00 100%);
+    border: none;
+    padding: 12px 30px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+button:disabled {
+    background: #666;
+    cursor: not-allowed;
+}
