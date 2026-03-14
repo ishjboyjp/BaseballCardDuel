@@ -1,5 +1,5 @@
 /**
- * 棒球卡牌對戰 - 遊戲引擎 (修復版)
+ * 棒球卡牌對戰 - 遊戲引擎 (Phase 1 升級版)
  */
 
 class BaseballCardGame {
@@ -19,6 +19,13 @@ class BaseballCardGame {
         this.isPlayerTurn = true;
         this.pendingDefense = null;
         this.gameOver = false;
+        this.lastCard = null; // 上一張打出的牌
+        
+        // AI 控制器
+        this.ai = new AIController(AI_LEVEL.MEDIUM);
+        
+        // 反應鏈
+        this.reaction = new ReactionChain();
         
         this.init();
     }
@@ -30,11 +37,24 @@ class BaseballCardGame {
         
         document.getElementById('draw-btn').addEventListener('click', () => this.drawCard());
         
+        // AI 難度選擇
+        document.getElementById('ai-difficulty').addEventListener('change', (e) => {
+            this.setAIDifficulty(e.target.value);
+        });
+        
         this.renderHand();
         this.updateDisplay();
-        this.message('⚾ 遊戲開始！點擊卡牌出牌');
+        this.message('⚾ 遊戲開始！選擇難度後點擊卡牌出牌');
         
-        console.log('初始化完成');
+        console.log('初始化完成 - AI Level:', this.ai.level);
+    }
+    
+    /**
+     * 設定 AI 難度
+     */
+    setAIDifficulty(level) {
+        this.ai = new AIController(level);
+        this.message(`AI 難度已設定為: ${level}`);
     }
     
     drawCard() {
@@ -52,14 +72,18 @@ class BaseballCardGame {
         }
     }
     
+    /**
+     * 玩家出牌
+     */
     playCard(index) {
         if (!this.isPlayerTurn || this.gameOver) return;
         
         const card = this.playerHand[index];
         
-        // 檢查條件
-        if (card.condition && !card.condition(this)) {
-            this.message(`⚠️ ${card.name} 需要特定條件`);
+        // 驗證是否可以出牌
+        const validation = RuleValidator.canPlayCard(card, this.getGameState());
+        if (!validation.valid) {
+            this.message(`⚠️ ${validation.reason}`);
             return;
         }
         
@@ -76,20 +100,78 @@ class BaseballCardGame {
             this.strikes = 0;
         }
         
-        let result = '';
-        // 執行並取得結果訊息
         card.effect(this);
+        
+        // 記錄上一張牌
+        this.lastCard = card;
         
         if (this.gameOver) return;
         
-        // 換 AI
-        this.isPlayerTurn = false;
-        this.updateDisplay();
+        // 檢查是否有反應
+        const validReactions = this.reaction.getValidReactions(card, this.aiHand);
         
-        // AI 延遲出牌
-        setTimeout(() => this.aiTurn(), 800);
+        if (validReactions.length > 0) {
+            // AI 可以選擇反應
+            this.pendingDefense = card.id;
+            this.updateDisplay();
+            
+            setTimeout(() => this.aiDefense(card), 800);
+        } else {
+            // 沒有反應，換 AI
+            this.isPlayerTurn = false;
+            this.updateDisplay();
+            
+            setTimeout(() => this.aiTurn(), 800);
+        }
     }
     
+    /**
+     * AI 防禦/反應
+     */
+    aiDefense(attackCard) {
+        const defenseCard = this.ai.selectDefense(this.aiHand, attackCard);
+        
+        if (defenseCard) {
+            // 檢查是否可以被失效
+            const counters = this.reaction.getCounters(defenseCard, this.playerHand);
+            
+            if (counters.length > 0 && Math.random() > 0.5) {
+                // 被失效
+                const counterCard = counters[0];
+                this.aiHand = this.aiHand.filter(c => c.id !== counterCard.id);
+                this.message(`🤖 ${defenseCard.name} → 被 ${counterCard.name} 失效！`);
+                this.showPlay(null, defenseCard, `${counterCard.name} 失效`);
+                
+                // 攻擊牌效果生效
+                attackCard.effect(this);
+            } else {
+                // 防禦成功
+                this.aiHand = this.aiHand.filter(c => c.id !== defenseCard.id);
+                this.message(`🤖 ${defenseCard.name} 擋住了你的 ${attackCard.name}！`);
+                this.showPlay(null, defenseCard, '防禦成功');
+                
+                defenseCard.effect(this);
+            }
+        } else {
+            this.message(`🤖 無法防禦你的 ${attackCard.name}`);
+        }
+        
+        this.lastCard = defenseCard;
+        
+        if (this.gameOver) return;
+        
+        // 補牌並換回玩家
+        this.fillHands();
+        
+        this.isPlayerTurn = true;
+        this.pendingDefense = null;
+        this.updateDisplay();
+        this.message('👈 輪到你了！');
+    }
+    
+    /**
+     * AI 回合
+     */
     aiTurn() {
         if (this.gameOver || this.isPlayerTurn) return;
         
@@ -98,70 +180,86 @@ class BaseballCardGame {
             this.aiHand.push(this.deck.pop());
         }
         
-        // 優先處理防禦
-        if (this.pendingDefense) {
-            const defenseCards = this.aiHand.filter(c => 
-                c.counter && c.counter.includes(this.pendingDefense)
-            );
-            
-            if (defenseCards.length > 0) {
-                const idx = this.aiHand.findIndex(c => c.id === defenseCards[0].id);
-                const card = this.aiHand.splice(idx, 1)[0];
-                this.message(`🤖 AI: ${card.name}`);
-                this.showPlay(null, card, "");
-                
-                if (card.resetCount) {
-                    this.balls = 0;
-                    this.strikes = 0;
-                }
-                card.effect(this);
-                
-                if (this.gameOver) return;
-            } else {
-                this.message('🤖 無法防禦');
-                this.pendingDefense = null;
-            }
-        } else {
-            // 隨機出牌
-            const idx = Math.floor(Math.random() * this.aiHand.length);
-            const card = this.aiHand.splice(idx, 1)[0];
-            
-            this.message(`🤖 AI: ${card.name}`);
-            this.showPlay(null, card, "");
-            
-            if (card.resetCount) {
-                this.balls = 0;
-                this.strikes = 0;
-            }
-            card.effect(this);
+        // AI 選擇出牌
+        const card = this.ai.selectCard(this.aiHand, this.getGameState());
+        
+        if (!card) {
+            this.message('🤖 沒有可出的牌');
+            this.isPlayerTurn = true;
+            this.updateDisplay();
+            return;
         }
+        
+        this.aiHand = this.aiHand.filter(c => c.id !== card.id);
+        this.message(`🤖 AI: ${card.name}`);
+        this.showPlay(null, card, '');
+        
+        // 執行效果
+        if (card.resetCount) {
+            this.balls = 0;
+            this.strikes = 0;
+        }
+        
+        card.effect(this);
+        this.lastCard = card;
         
         if (this.gameOver) return;
         
-        // 補牌
+        // 檢查玩家是否可以反應
+        const validReactions = this.reaction.getValidReactions(card, this.playerHand);
+        
+        if (validReactions.length > 0) {
+            this.pendingDefense = card.id;
+            this.updateDisplay();
+            this.message('⚠️ 你可以反擊！');
+        } else {
+            // 補牌並換回玩家
+            this.fillHands();
+            
+            this.isPlayerTurn = true;
+            this.updateDisplay();
+            
+            if (!this.pendingDefense) {
+                this.message('👈 輪到你了！');
+            }
+        }
+    }
+    
+    /**
+     * 補牌
+     */
+    fillHands() {
         while (this.playerHand.length < 7 && this.deck.length > 0) {
             this.playerHand.push(this.deck.pop());
         }
         while (this.aiHand.length < 7 && this.deck.length > 0) {
             this.aiHand.push(this.deck.pop());
         }
-        
         this.renderHand();
-        
-        // 換回玩家
-        this.isPlayerTurn = true;
-        this.updateDisplay();
-        
-        if (!this.pendingDefense) {
-            this.message('👈 輪到你了！');
-        }
+    }
+    
+    /**
+     * 獲取遊戲狀態（供 AI 和驗證器使用）
+     */
+    getGameState() {
+        return {
+            balls: this.balls,
+            strikes: this.strikes,
+            outs: this.outs,
+            bases: [...this.bases],
+            inning: this.inning,
+            isTop: this.isTop,
+            homeScore: this.homeScore,
+            awayScore: this.awayScore,
+            lastCard: this.lastCard,
+            pendingDefense: this.pendingDefense
+        };
     }
     
     advanceRunners(bases) {
         let scored = 0;
-        
-        // 推進
         const newBases = [false, false, false];
+        
         for (let i = 2; i >= 0; i--) {
             if (this.bases[i]) {
                 if (i + bases >= 3) {
@@ -172,7 +270,6 @@ class BaseballCardGame {
             }
         }
         
-        // 打者
         for (let i = bases - 1; i >= 0; i--) {
             if (!newBases[i]) {
                 newBases[i] = true;
@@ -191,13 +288,6 @@ class BaseballCardGame {
     resetCount() {
         this.balls = 0;
         this.strikes = 0;
-    }
-    
-    nextBatter() {
-        while (this.playerHand.length < 7 && this.deck.length > 0) {
-            this.playerHand.push(this.deck.pop());
-            this.renderHand();
-        }
     }
     
     nextInning() {
@@ -223,6 +313,13 @@ class BaseballCardGame {
         this.updateDisplay();
     }
     
+    nextBatter() {
+        while (this.playerHand.length < 7 && this.deck.length > 0) {
+            this.playerHand.push(this.deck.pop());
+            this.renderHand();
+        }
+    }
+    
     endGame() {
         let result = '';
         if (this.homeScore > this.awayScore) {
@@ -237,17 +334,12 @@ class BaseballCardGame {
         document.getElementById('draw-btn').disabled = true;
     }
     
-    message(text, isResult = false) {
+    message(text) {
         document.getElementById('message-area').innerHTML = 
             `<div class="message">${text}</div>`;
-        if (isResult) {
-            document.getElementById('result-text').textContent = text;
-        }
     }
     
-    // 顯示雙方出牌
     showPlay(playerCard, aiCard, resultText) {
-        // 玩家出牌
         const playerZone = document.getElementById('player-play');
         playerZone.innerHTML = '';
         if (playerCard) {
@@ -257,7 +349,6 @@ class BaseballCardGame {
             playerZone.appendChild(cardEl);
         }
         
-        // AI 出牌
         const aiZone = document.getElementById('ai-play');
         aiZone.innerHTML = '';
         if (aiCard) {
@@ -267,7 +358,6 @@ class BaseballCardGame {
             aiZone.appendChild(cardEl);
         }
         
-        // 結果
         document.getElementById('last-play').textContent = resultText || '';
     }
     
@@ -277,19 +367,19 @@ class BaseballCardGame {
         document.getElementById('inning').textContent = `第${this.inning}局`;
         document.getElementById('inning-half').textContent = this.isTop ? '上' : '下';
         
-        // B 壞球
+        // 壞球
         const ballsDots = document.querySelectorAll('#bso-display .balls .bso-dot');
         ballsDots.forEach((dot, i) => {
             dot.classList.toggle('filled', i < this.balls);
         });
         
-        // S 好球
+        // 好球
         const strikesDots = document.querySelectorAll('#bso-display .strikes .bso-dot');
         strikesDots.forEach((dot, i) => {
             dot.classList.toggle('filled', i < this.strikes);
         });
         
-        // O 出局
+        // 出局
         const outsDots = document.querySelectorAll('#bso-display .outs .bso-dot');
         outsDots.forEach((dot, i) => {
             dot.classList.toggle('filled', i < this.outs);
@@ -305,12 +395,21 @@ class BaseballCardGame {
         const container = document.getElementById('hand-cards');
         container.innerHTML = '';
         
+        const gameState = this.getGameState();
+        
         this.playerHand.forEach((card, index) => {
             const cardEl = document.createElement('div');
             cardEl.className = `card ${card.type || ''}`;
+            
+            // 檢查是否可出
+            const validation = RuleValidator.canPlayCard(card, gameState);
+            if (!validation.valid) {
+                cardEl.style.opacity = '0.5';
+                cardEl.title = validation.reason;
+            }
+            
             cardEl.innerHTML = `
                 <div class="card-name">${card.name}</div>
-                <div class="card-type">${card.nameEn}</div>
             `;
             cardEl.addEventListener('click', () => this.playCard(index));
             container.appendChild(cardEl);
